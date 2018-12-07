@@ -38,7 +38,7 @@ public class ConnectFour {
 				}
 				
 				if(!m_Finish)
-					setTileForBot(tFreeFields);
+					setTileForBot(tFreeFields);//test
 			}
 			else {
 				System.out.println(Constants.OUTPUT_InputNotValid);

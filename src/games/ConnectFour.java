@@ -27,11 +27,11 @@ public class ConnectFour {
 			
 			drawPlayingField();
 			
-			String tInput = getInput(pScanner);
+			String tChange = getInput(pScanner);
 			
-			if(isValidInput(tInput)) {
+			if(isValidInput(tChange)) {
 				if(!m_Finish) {
-					int tRowIndex = Integer.valueOf(tInput)-1;
+					int tRowIndex = Integer.valueOf(tChange)-1;
 					boolean tTileSetSucessfully = setTile(tRowIndex, 
 							Constants.PLAYER_SYMBOL, tFreeFields);
 					System.out.println(getSucessfulOutput(tTileSetSucessfully));

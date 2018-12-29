@@ -33,11 +33,11 @@
 	<!-- build -->
 	<target name="build" depends="init">
 		<echo message="${ant.project.name}: ${ant.file}"/>
-		  <javac debug="true" destdir="bin" 
-includeantruntime="false" source="${src}">
-			<src path="src"/>
-			<classpath refid="VWS.classpath"/>
-		</javac>
+			<javac debug="true" destdir="bin" includeantruntime="false">
+				<src path="${src}"/>
+				<classpath refid="VWS.classpath"/>
+				<exclude name="testing/**"/>
+			</javac>
 	</target>
 	
 	<!-- compile -->

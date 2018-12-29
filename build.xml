@@ -1,41 +1,95 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- WARNING: Eclipse auto-generated file.
-              Any modifications will be overwritten.
-              To include a user specific buildfile here, simply create one in the same
-              directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="VierGewinnt_CCD">
-    <property environment="env"/>
-    <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.8"/>
-    <property name="source" value="1.8"/>
-    <path id="VierGewinnt_CCD.classpath">
+<project basedir="." default="junit" name="VWS">
+	
+	<!-- global properties -->
+	<property name="src"     location="src"/>
+	<property name="build"   location="build"/>
+	<property name="dist"  	 location="dist"/>
+	<property name="jar"     value="${build}/jar"/>
+	<property name="doc"     value="${build}/doc"/>
+	<property name="report"  value="${build}/junitreport"/>
+	<property name="junit"     value="junit"/>
+    <property name="main-class"  value="main.Start"/>
+	
+    <path id="VWS.classpath">
         <pathelement location="bin"/>
     </path>
+	
+	<!-- init -->
     <target name="init">
-        <mkdir dir="bin"/>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="src">
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
+    	<mkdir dir="${build}"/>
+    	<mkdir dir="${dist}/lib"/>
+    	<mkdir dir="${report}"/>
+    	<mkdir dir="${doc}"/>
     </target>
-    <target name="clean">
-        <delete dir="bin"/>
-    </target>
-    <target depends="clean" name="cleanall"/>
-    <target depends="build-subprojects,build-project" name="build"/>
-    <target name="build-subprojects"/>
-    <target depends="init" name="build-project">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
-            <src path="src"/>
-            <classpath refid="VierGewinnt_CCD.classpath"/>
-        </javac>
-    </target>
-    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-    <target name="SpielStarten">
-        <java classname="main.SpielStarten" failonerror="true" fork="yes">
-            <classpath refid="VierGewinnt_CCD.classpath"/>
-        </java>
-    </target>
+	
+	<!-- clean -->
+	<target name="clean">
+		<delete dir="${build}"/>
+		<delete dir="${dist}"/>
+		<delete dir="${report}"/>
+		<delete dir="${doc}"/>
+	</target>
+	
+	<!-- build -->
+	<target name="build" depends="init">
+		<echo message="${ant.project.name}: ${ant.file}"/>
+		  <javac debug="true" destdir="bin" 
+includeantruntime="false" source="${src}">
+			<src path="src"/>
+			<classpath refid="VWS.classpath"/>
+		</javac>
+	</target>
+	
+	<!-- compile -->
+	<target name="compile" depends="build">
+		<javac srcdir="${src}" destdir="${build}" includeantruntime="false">
+			<exclude name="testing/**"/>
+		</javac>
+	</target>
+	
+	<!-- jar -->
+	<target name="jar" depends="compile">
+	    <jar jarfile="${dist}/lib/VWS.jar" basedir="${build}">
+	    	<manifest>
+	    		<attribute name="Main-Class" value="main.Start"/>
+	    	</manifest>
+	    </jar>
+	</target>
+	
+	<!-- run -->
+	<target name="run" depends="jar">
+		<java classname="main.Start" failonerror="true" fork="true">
+			<classpath>
+				<path refid="VWS.classpath"/>
+			</classpath>
+		</java>
+	</target>
+	
+	<!-- run jar -->
+	<target name="run_jar" depends="jar">
+		<java jar="${dist}/lib/VWS.jar" failonerror="true" fork="true"/>
+	</target>
+	
+	<!-- test junit -->
+	<target name="junit" depends="jar">
+		<junit printsummary="yes">
+			<classpath>
+				<path location="lib/junit.jar"/>
+				<path location="lib/hamcrest-core-1.3.jar"/>
+				<path refid="VWS.classpath"/>
+			</classpath>
+			
+			<formatter type="xml"/>
+
+			<batchtest fork="yes" todir="${report}">
+				<fileset dir="${src}" includes="**/testing/*Test.java"/>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<!-- doc -->
+	<target name="doc">
+		<javadoc sourcepath="${src}" destdir="${doc}"/>
+	</target>
+
 </project>

@@ -7,7 +7,7 @@ public class ConnectFourTest {
 
 	@Test
 	public void test() {
-		assertTrue("Not yet implemented", true);
+		assertTrue("Not yet implemented", false);
 	}
 
 	

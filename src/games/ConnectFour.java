@@ -5,8 +5,7 @@ import java.util.Scanner;
 import constants.Constants;
 
 public class ConnectFour {
-	
-	// Testaenderung
+
 	private final String[][] m_PlayingField;
 	private boolean m_Finish = false;
 
